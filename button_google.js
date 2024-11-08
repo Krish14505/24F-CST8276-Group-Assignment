@@ -34,7 +34,41 @@ function getAPI(geoAPI){
     http.send();
     http.onreadystatechange = function(){
         if(this.readyState === 4 && this.status === 200){
-            result.innerHTML = this.responseText;
+            const response = JSON.parse(this.responseText);
+            //We may use a 'results' array with address components
+            if (response.results && response.results.length > 0) {
+                const addressComponents = response.results[0].address_components;
+                const formattedAddress = response.results[0].formatted_address;
+                //extract relevant address components
+                let country = "";
+                let city = "";
+                let postalCode = "";
+
+                for (const component of addressComponents) {
+                    if (component.types.includes("country")) {
+                        country = component.long_name;
+                    } else if (component.types.includes("locality"))   
+                    {               
+                        city = component.long_name;
+                    } else if (component.types.includes("postal_code"))   
+                    {
+                        postalCode = component.long_name;
+                    }
+                }
+            //Display formatted address & extracted components
+            result.innerHTML = `
+            Formatted Address: ${formattedAddress}<br>
+            Country: ${country}<br>
+            City: ${city}<br>
+            Postal Code: ${postalCode}
+        `;
+
+        //TODO : send data to our MySQL Database
+        
+        } else {
+            result.innerHTML = "Location information not found.";
+            
         }
     }
+};
 }
