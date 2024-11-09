@@ -1,4 +1,4 @@
-// geoAPI Link is from google api
+// same with button.js, just using google ap
 
 const http = new XMLHttpRequest()
 let result = document.querySelector("#result")
@@ -29,12 +29,19 @@ function findMyCoordinates(){
     }
 }
 
-function getAPI(geoAPI){
+function getAPI(geoAPI) {
     http.open("GET", geoAPI);
     http.send();
-    http.onreadystatechange = function(){
-        if(this.readyState === 4 && this.status === 200){
-            result.innerHTML = this.responseText;
+    http.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const response = JSON.parse(this.responseText);
+            const address = response.results[0]?.formatted_address;
+            if (address) {
+                result.innerHTML = `Address: ${address}`;
+            } else {
+                result.innerHTML = "Address not found.";
+            }
         }
-    }
+    };
 }
+
