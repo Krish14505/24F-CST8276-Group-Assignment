@@ -16,7 +16,7 @@ function findMyCoordinates(){
                 
                 console.log("Latitude: ", latitude, "Longitude: ", longitude);
                 
-                const geoAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyDwrOSN1lzpjga-RY3zVGYs9mUWSWp6VJ4`;
+                const geoAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyA_d9OtADASjokYvll_eFL-MNTlcBWYBzI`;
                 
                 getAPI(geoAPI);
             },
