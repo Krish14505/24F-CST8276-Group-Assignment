@@ -3,18 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Geolocation API Assignment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        #result {
+            white-space: pre-wrap;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
 
-    <button id="share">Share My Location</button>
+    <h1>Google API Location Sharing</h1>
+    <h3>Current Time: <span id="currentTime"></span></h3>
+    
+    <div id="buttons">
+        <button id="share">Share My Location</button>
+        <button id="stop" disabled>Stop Sharing</button>
+    </div>
+    
     <pre id="result"></pre>
-    <script src="button.js"></script>  <!--change to button_google.js-->
-    
-    
+    <script src="button_google.js"></script>
 </body>
 </html>
-
-<!--Kyla Google API: 
-AIzaSyDwrOSN1lzpjga-RY3zVGYs9mUWSWp6VJ4-->
