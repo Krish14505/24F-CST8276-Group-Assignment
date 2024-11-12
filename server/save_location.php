@@ -1,4 +1,10 @@
 <?php
+//This code was reused and refactored from PAULO's project for Web Development in Level 2
+//AUTHOR: Paulo Ricardo Gomes Granjeiro - 041118057
+//Collaborators: Craig, Kyla, Krish, Leonardo, Yazid
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require_once ('../database/db_credentials.php');
 require_once ('../database/database.php');
 
@@ -16,6 +22,11 @@ $formatted_address = $data['formatted_address'];
 
 // Connect to the database
 $db = db_connect();
+if ($db == null){
+    echo ("connection NOT successfull");
+} else{
+    echo ("connection successful");
+}
 
 // Prepare the SQL statement with additional fields
 $sql = "INSERT INTO Locations (user_id, latitude, longitude, country, city, postal_code, formatted_address) VALUES (?, ?, ?, ?, ?, ?, ?)";

@@ -1,0 +1,16 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            //update this according to who is using. This should be the place in you htdocs(inside XAMPP) where the project is
+            "url": "http://localhost/frontend/24F-CST8277-Group-Assignment",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}

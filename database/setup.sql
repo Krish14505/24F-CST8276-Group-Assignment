@@ -1,3 +1,5 @@
+--Database script designed by Paulo Granjeiro (041118057) and implemented by Kyla, Leonardo, and Craig
+--Collaborators: Krish and Yazid.
 CREATE DATABASE geolocation;
 -- create custom database user
 CREATE USER 'geo_user' @'localhost' IDENTIFIED BY 'geo_PASSWORD69!';
@@ -17,7 +19,7 @@ CREATE TABLE Locations (
     user_id INT,
     latitude DECIMAL(10, 7) NOT NULL,
     longitude DECIMAL(10, 7) NOT NULL,
-    country VARCHAR(255),
+    - country VARCHAR(255),
     city VARCHAR(255),
     postal_code VARCHAR(20),
     formatted_address TEXT,
