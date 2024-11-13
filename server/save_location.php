@@ -11,8 +11,16 @@ require_once ('../database/database.php');
 // Get JSON input and decode
 $data = json_decode(file_get_contents("php://input"), true);
 
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(['success' => false, 'message' => 'User not logged in']);
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+
 // Extract data from JSON
-$user_id = $data['user_id'];
 $latitude = $data['latitude'];
 $longitude = $data['longitude'];
 $country = $data['country'];

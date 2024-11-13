@@ -12,6 +12,9 @@ let currentTimeDisplay = document.querySelector("#currentTime");
 let previousAddress = "";
 let fetchCount = 0;
 let intervalId = null;
+let currentLatitude = null;
+let currentLongitude = null;
+let isSharing = false;
 
 // Google Maps variables
 let map;
@@ -20,9 +23,15 @@ let directionsService;
 let directionsRenderer;
 let routePath = []; // Store the route path
 
-// Add event listeners to the buttons share my location and stop sharing
+// Add event listeners to the buttons share my location, stop sharing, and save location
 document.querySelector("#share").addEventListener("click", startLocationUpdates);
 document.querySelector("#stop").addEventListener("click", stopLocationUpdates);
+const saveLocationButton = document.querySelector("#save-location");
+if (saveLocationButton) {
+    saveLocationButton.addEventListener("click", saveCurrentLocation);
+}
+
+const spinner = document.querySelector("#spinner");
 
 /**
  * Function to initialize the Google Map
@@ -47,9 +56,6 @@ function initMap() {
     console.log("Map initialized successfully");
 }
 
-
-const spinner = document.querySelector("#spinner");
-
 /**
  * Function to start location updates
  */
@@ -59,9 +65,9 @@ function startLocationUpdates() {
         intervalId = setInterval(findMyCoordinates, 15000);
         document.querySelector("#stop").disabled = false;
         document.querySelector("#share").disabled = true;
-
-        // Show spinner
+        saveLocationButton.style.display = "inline-block"; // Show Save button
         spinner.style.display = "block";
+        isSharing = true;
     }
 }
 
@@ -74,9 +80,9 @@ function stopLocationUpdates() {
         intervalId = null;
         document.querySelector("#stop").disabled = true;
         document.querySelector("#share").disabled = false;
-
-        // Hide spinner
+        saveLocationButton.style.display = "none"; // Hide Save button
         spinner.style.display = "none";
+        isSharing = false;
     }
 }
 
@@ -95,16 +101,15 @@ function findMyCoordinates() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-                console.log("Latitude:", latitude, "Longitude:", longitude);
+                currentLatitude = position.coords.latitude;
+                currentLongitude = position.coords.longitude;
+                console.log("Latitude:", currentLatitude, "Longitude:", currentLongitude);
 
-                const geoAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCjk8ThaZ9tgH1FPGAch_JCECbysZS3_So`; //google string to use geo APIs and also the key
+                const geoAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLatitude},${currentLongitude}&key=AIzaSyCjk8ThaZ9tgH1FPGAch_JCECbysZS3_So`;
 
-                updateMap(latitude, longitude); // Update the map with the new coordinates
-                getAPI(geoAPI, latitude, longitude);
+                updateMap(currentLatitude, currentLongitude);
+                getAPI(geoAPI, currentLatitude, currentLongitude);
             },
-            // Error if findMyCoordinates fails
             (err) => {
                 console.error("Error getting location:", err.message);
                 alert("Error getting location: " + err.message);
@@ -116,12 +121,10 @@ function findMyCoordinates() {
 }
 
 /**
- * Function to update the map with the current location and draw the route
+ * Function to update the map with the current location
  */
 function updateMap(latitude, longitude) {
     const position = { lat: latitude, lng: longitude };
-
-    // Add new location to route path
     routePath.push(position);
     map.setCenter(position);
 
@@ -129,12 +132,11 @@ function updateMap(latitude, longitude) {
         circle.setMap(null);
     }
 
-    // Blue circle to show user's current location
     circle = new google.maps.Circle({
-        strokeColor: "#031546", //border
+        strokeColor: "#031546",
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: "#031546", 
+        fillColor: "#031546",
         fillOpacity: 0.8,
         map: map,
         center: position,
@@ -145,7 +147,6 @@ function updateMap(latitude, longitude) {
         drawRoute();
     }
 }
-
 
 /**
  * Function to draw the route on the map using DirectionsService
@@ -177,10 +178,40 @@ function drawRoute() {
 }
 
 /**
- * Function to fetch address using Google Maps API
- * @param {*} geoAPI 
- * @param {*} latitude 
- * @param {*} longitude 
+ * Function to save the current location to the database
+ */
+async function saveCurrentLocation() {
+    if (currentLatitude !== null && currentLongitude !== null && isSharing) {
+        const locationData = {
+            latitude: currentLatitude,
+            longitude: currentLongitude
+        };
+
+        try {
+            const response = await fetch("server/save_location.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(locationData)
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert("Location saved successfully!");
+            } else {
+                alert("Failed to save location.");
+            }
+        } catch (error) {
+            console.error("Error saving location:", error);
+            alert("Error saving location.");
+        }
+    } else {
+        alert("No location data to save!");
+    }
+}
+
+/**
+ * Fetching the address using Google API and saving location data
  */
 function getAPI(geoAPI, latitude, longitude) {
     console.log("Fetching address from:", geoAPI);
@@ -195,58 +226,13 @@ function getAPI(geoAPI, latitude, longitude) {
             const currentTime = new Date().toLocaleTimeString();
 
             if (newAddress) {
-                console.log(`Fetch #${fetchCount} at ${currentTime}: ${newAddress}`);
                 result.innerHTML += `\n${fetchCount}: ${newAddress} (Fetched at: ${currentTime})\n`;
-                previousAddress = newAddress;
-            } else {
-                result.innerHTML += `\n${fetchCount}: Address not found (Fetched at: ${currentTime})\n`;
+                sendLocationToServer({ latitude, longitude, formatted_address: newAddress });
             }
-
-            // ADDED BY PAULO
-            const locationData = response.results[0]?.address_components || [];
-            const country = locationData.find(item => item.types.includes("country"))?.long_name || "";
-            const city = locationData.find(item => item.types.includes("locality"))?.long_name || "";
-            const postal_code = locationData.find(item => item.types.includes("postal_code"))?.long_name || "";
-
-            // Send data to PHP (server)
-            sendLocationToServer({
-                user_id: 1,
-                latitude,
-                longitude,
-                country,
-                city,
-                postal_code,
-                formatted_address: newAddress
-            });
         }
     };
 }
 
-/**
- * Function to send data to the server (save_location) //ADDED BY PAULO
- * @param {*} data 
- */
-function sendLocationToServer(data) {
-    fetch("server/save_location.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Server response:", data.message);
-    })
-    .catch(error => {
-        console.error("Error:", error);
-    });
-}
-
-// Update time as soon as page loads
-setInterval(updateCurrentTime, 1000); // Every second
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    initMap();
-});
+// Update the current time every second
+setInterval(updateCurrentTime, 1000);
+document.addEventListener("DOMContentLoaded", initMap);

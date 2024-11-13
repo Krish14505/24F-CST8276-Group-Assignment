@@ -1,3 +1,4 @@
+--setup.sql
 --Database script designed by Paulo Granjeiro (041118057) and implemented by Kyla, Leonardo, and Craig
 --Collaborators: Krish and Yazid.
 CREATE DATABASE geolocation;
