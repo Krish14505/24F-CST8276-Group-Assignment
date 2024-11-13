@@ -1,40 +1,39 @@
+<!-- index.html-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geolocation API Assignment</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        #buttons {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-        }
-        #result {
-            white-space: pre-wrap;
-            margin-top: 30px;
-        }
-    </style>
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body id="home-page">
 
-    <h1>Google API Location Sharing</h1>
-    <h3>Current Time: <span id="currentTime"></span></h3>
-    
-    <div id="buttons">
-        <button id="share">Share My Location</button>
-        <button id="stop" disabled>Stop Sharing</button>
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Welcome to Our Project</h1>
+        <p>Select a page to get started:</p>
+
+        <div class="image-container">
+            <a href="location.html" class="image-link">
+                <div class="image-box">
+                    <img src="images/location.png" alt="Location Sharing">
+                    <div class="overlay-text">Share Your Location</div>
+                </div>
+            </a>
+
+            <a href="routes.html" class="image-link">
+                <div class="image-box">
+                    <img src="images/route.png" alt="Find the Best Route">
+                    <div class="overlay-text">Find Route</div>
+                </div>
+            </a>
+        </div>
     </div>
-    
-    <pre id="result"></pre>
-    <script src="button_google.js"></script>
+
+    <div id="footer"></div>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
