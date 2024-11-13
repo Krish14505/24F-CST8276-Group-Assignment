@@ -1,0 +1,242 @@
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #e9e9f0;
+    color: #6d6d87;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    
+}
+
+/* Header Styling */
+header {
+    background-color: #767693;
+    padding: 20px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #c2b8b8;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links a:hover {
+    background-color: #1e88e5;
+    color: #ffffff;
+}
+
+/* Content Styling */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #031546;
+    color: #cfc2c2;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    margin-top: auto;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Location Page Styling */
+.result-container {
+    background-color: #d2d4e1;
+    color: #425b6d;
+    padding: 20px;
+    border-radius: 8px;
+    width: 60%;
+    max-width: 600px;
+    margin: 30px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.result-title {
+    font-weight: bold;
+    font-size: 18px;
+    color: #031546;
+    margin-bottom: 10px; 
+    text-align: center; 
+}
+
+#result {
+    background-color: inherit; 
+    color: inherit; 
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    width: 100%;
+    box-shadow: none;
+    text-align: left;
+}
+
+#spinner .spinner-border {
+    width: 3rem;
+    height: 3rem; 
+    color: #031546;
+}
+
+#map {
+    height: 500px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Routes Page Styling */
+#routes-page .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; 
+    margin: 20px auto; 
+    max-width: 400px; 
+}
+
+#routes-page .form-control {
+    width: 100%; 
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid #6d6d87; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#routes-page .form-control:focus {
+    border-color: #1e88e5; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    outline: none; 
+}
+
+
+/* Buttons Styling */
+button {
+    background-color: #031546;
+    color: #cfc2c2;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #1e88e5;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#buttons {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Landing Page Styling */
+#home-page .content {
+    text-align: center;
+    padding: 50px;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.image-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.image-box {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #f0f5ff;
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 0.5px 0.5px 8px rgba(3, 21, 70, 0.9);   /* right, down, blur */
+    text-align: center;
+    pointer-events: none;
+}
