@@ -10,19 +10,28 @@
 <body>
 
     <div id="header"></div>
-    <div class="content">
+    <div class="contentForm">
         <h2>Sign Up</h2>
     <form action="signup.php" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
+        
+        <div class="inputField">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+        </div>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
+        <div class="inputField">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+        </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
+        <div class="inputField">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+        </div>
 
-        <button type="submit">Sign Up</button>
+        <div class="button">
+            <button type="submit">Sign Up</button>
+        </div>
     </form>
     </div>
     <div id="footer"></div>

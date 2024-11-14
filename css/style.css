@@ -244,8 +244,7 @@ button:active {
 /* style.css */
 
 /* Basic styling for the input fields */
-.emailInput input,
-.passwordInput input {
+.inputField input  {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -256,15 +255,14 @@ button:active {
 }
 
 /* Input field focus style */
-.emailInput input:focus,
-.passwordInput input:focus {
+.inputField input:focus {
     border-color: #0073e6;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 115, 230, 0.5);
 }
 
 /* Button styling */
-.loginButton button {
+.button button {
     width: 100%;
     padding: 10px;
     background-color: #0073e6;
@@ -274,11 +272,13 @@ button:active {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+   
 }
 
 /* Button hover effect */
-.loginButton button:hover {
+.button button:hover {
     background-color: #005bb5;
+    
 }
 
 .contentForm {
