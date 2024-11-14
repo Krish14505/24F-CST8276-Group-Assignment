@@ -182,24 +182,40 @@ function drawRoute() {
  */
 async function saveCurrentLocation() {
     if (currentLatitude !== null && currentLongitude !== null && isSharing) {
+        // Fetch the user ID from the session
+        const sessionResponse = await fetch("../server/get_session.php");
+        const sessionData = await sessionResponse.json();
+
+        if (!sessionData.user_id) {
+            alert("User not logged in. Please sign in first.");
+            return;
+        }
+
+        // Include address information
         const locationData = {
+            user_id: sessionData.user_id,
             latitude: currentLatitude,
-            longitude: currentLongitude
+            longitude: currentLongitude,
+            formatted_address: currentLocationData?.formatted_address || "Unknown",
+            city: currentLocationData?.city || "",
+            country: currentLocationData?.country || "",
+            postal_code: currentLocationData?.postal_code || ""
         };
 
         try {
-            const response = await fetch("server/save_location.php", {
+            const response = await fetch("../server/save_location.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(locationData)
             });
+
             const result = await response.json();
             if (result.success) {
                 alert("Location saved successfully!");
             } else {
-                alert("Failed to save location.");
+                alert("Failed to save location: " + result.message);
             }
         } catch (error) {
             console.error("Error saving location:", error);
@@ -209,6 +225,7 @@ async function saveCurrentLocation() {
         alert("No location data to save!");
     }
 }
+
 
 /**
  * Fetching the address using Google API and saving location data
@@ -221,17 +238,26 @@ function getAPI(geoAPI, latitude, longitude) {
         if (this.readyState === 4 && this.status === 200) {
             const response = JSON.parse(this.responseText);
             const newAddress = response.results[0]?.formatted_address || "Address not found";
+            const locationData = response.results[0]?.address_components || [];
+            const country = locationData.find(item => item.types.includes("country"))?.long_name || "";
+            const city = locationData.find(item => item.types.includes("locality"))?.long_name || "";
+            const postal_code = locationData.find(item => item.types.includes("postal_code"))?.long_name || "";
 
-            fetchCount++;
-            const currentTime = new Date().toLocaleTimeString();
+            // Update global currentLocationData object
+            currentLocationData = {
+                latitude,
+                longitude,
+                formatted_address: newAddress,
+                city,
+                country,
+                postal_code
+            };
 
-            if (newAddress) {
-                result.innerHTML += `\n${fetchCount}: ${newAddress} (Fetched at: ${currentTime})\n`;
-                sendLocationToServer({ latitude, longitude, formatted_address: newAddress });
-            }
+            console.log("Fetched Address:", currentLocationData);
         }
     };
 }
+
 
 // Update the current time every second
 setInterval(updateCurrentTime, 1000);

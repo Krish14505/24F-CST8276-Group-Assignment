@@ -1,5 +1,6 @@
-<!-- routes.html-->
+<!-- routes.php-->
 
+<?php include('header.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,6 @@
 </head>
 
 <body id="routes-page" onload="initMap()">
-    <div id="header"></div>
 
     <div class="content">
             <!-- Main Content -->
@@ -37,9 +37,8 @@
         </div>
     </div>
 
-    <div id="footer"></div>
+    <?php include('footer.php'); ?>
 
-    <script src="js/main.js"></script>
     <script src="js/routes.js"></script>
 </body>
 </html>

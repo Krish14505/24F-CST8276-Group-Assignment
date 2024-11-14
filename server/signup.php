@@ -1,6 +1,8 @@
+<!-- signup.php -->
+
 <?php
-require_once('database.php');
-require_once('db_credentials.php');
+require_once('../database/database.php');
+require_once('../database/db_credentials.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -14,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     mysqli_stmt_bind_param($stmt, "sss", $username, $email, $password);
 
     if (mysqli_stmt_execute($stmt)) {
-        header("Location: login.html");
+        header("Location: ../signin_page.php");
         exit();
     } else {
         echo "Error: Could not register user.";

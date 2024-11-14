@@ -1,4 +1,6 @@
-<?php include('auth.php'); ?>
+<!-- dashboard.php -->
+<?php include('header.php'); ?>
+<?php include('server/user_auth.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,23 +10,29 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h2>Welcome to Your Dashboard</h2>
-    <button onclick="window.location.href='location.php'">Save Current Location</button>
-    
-    <h3>Your Saved Locations</h3>
-    <div id="locations"></div>
+    <div id="header"></div> 
+    <div class="content">
+        <h2>Welcome to Your Dashboard</h2>
+        
+        <h3>Your Saved Locations</h3>
+        <div id="locations"></div>
+    </div>
+    <?php include('footer.php'); ?>
+
 
     <script>
+        // Fetch saved locations when the page loads
         document.addEventListener("DOMContentLoaded", function() {
-            fetch('get_locations.php')
+            fetch('server/get_locations.php')
                 .then(response => response.json())
                 .then(data => {
+                    const locationsDiv = document.getElementById("locations");
+                    
                     if (data.success === false) {
-                        alert(data.message);
+                        locationsDiv.innerHTML = `<p>${data.message}</p>`;
                     } else {
-                        const locationsDiv = document.getElementById("locations");
-                        if (data.locations && data.locations.length > 0) {
-                            locationsDiv.innerHTML = data.locations.map(loc => `
+                        if (data.length > 0) {
+                            locationsDiv.innerHTML = data.map(loc => `
                                 <div>
                                     <p><strong>Address:</strong> ${loc.formatted_address}</p>
                                     <p><strong>City:</strong> ${loc.city}, <strong>Country:</strong> ${loc.country}</p>
@@ -38,8 +46,12 @@
                         }
                     }
                 })
-                .catch(error => console.error('Error fetching locations:', error));
+                .catch(error => {
+                    console.error('Error fetching locations:', error);
+                    document.getElementById("locations").innerHTML = "<p>Failed to load locations.</p>";
+                });
         });
     </script>
+    
 </body>
 </html>

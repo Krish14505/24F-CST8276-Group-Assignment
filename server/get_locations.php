@@ -1,6 +1,7 @@
+<!-- get_locations.php -->
 <?php
-require_once('database.php');
-require_once('db_credentials.php');
+require_once('../database/database.php');
+require_once('../database/db_credentials.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {

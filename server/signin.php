@@ -1,7 +1,9 @@
+<!-- signin.php -->
+
 <?php
-require_once('database.php');
-require_once('db_credentials.php');
-session_start(); // Start session at beginning
+require_once('../database/database.php');
+require_once('../database/db_credentials.php');
+session_start(); 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']); // Sanitize inputs
@@ -9,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $db = db_connect();
 
-    // Prepare and execute the query to find the user by email
+    // Find the user by email
     $sql = "SELECT * FROM Users WHERE email = ?";
     $stmt = mysqli_prepare($db, $sql);
     mysqli_stmt_bind_param($stmt, "s", $email);
@@ -20,8 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Verify user's password
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['user_id']; // Store user ID
+        $_SESSION['username'] = $user['username']; // Store the username
         db_disconnect($db); // Close connection
-        header("Location: dashboard.php"); 
+        header("Location: ../dashboard.php"); 
         exit();
     } else {
         echo "<p>Invalid email or password.</p>";

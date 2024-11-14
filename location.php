@@ -1,5 +1,6 @@
-<!-- location.html-->
+<!-- location.php-->
 
+<?php include('header.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,6 @@
 
 </head>
 <body id="location-page">
-    <div id="header"></div>
 
     <div class="content">
         <!-- Main Content -->
@@ -41,9 +41,8 @@
         
     </div>
 
-    <div id="footer"></div>
+    <?php include('footer.php'); ?>
 
     <script src="js/button_google.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>

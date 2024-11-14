@@ -1,5 +1,6 @@
-<!-- signin.html -->
+<!-- signin.php -->
 
+<?php include('header.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,11 +10,9 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-    <div id="header"></div>
     <div class="contentForm">
         <h2 class="HeaderForm" style="padding: 10px;">Sign In</h2>
-    <form action="signin.php" method="POST">
+    <form action="server/signin.php" method="POST">
 
         <div class="inputField">
             <label for="email">Email:</label>
@@ -30,11 +29,10 @@
         </div>
     </form>
 
-    <p>Don't have an account? <a href="signup.html">Create an account</a></p>
+    <p>Don't have an account? <a href="signup_page.php">Create an account</a></p>
     </div>
-    <div id="footer"></div>
+    <?php include('footer.php'); ?>
 
     <script src="js/button_google.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>

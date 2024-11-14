@@ -1,4 +1,8 @@
-<!-- index.html-->
+<!-- index.php
+link: 
+http://localhost:8080/24F-CST8277-Google/index.php
+
+-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,14 +20,14 @@
         <p>Select a page to get started:</p>
 
         <div class="image-container">
-            <a href="location.html" class="image-link">
+            <a href="location.php" class="image-link">
                 <div class="image-box">
                     <img src="images/location.png" alt="Location Sharing">
                     <div class="overlay-text">Share Your Location</div>
                 </div>
             </a>
 
-            <a href="routes.html" class="image-link">
+            <a href="routes.php" class="image-link">
                 <div class="image-box">
                     <img src="images/route.png" alt="Find the Best Route">
                     <div class="overlay-text">Find Route</div>
@@ -31,9 +35,9 @@
             </a>
 
             <!-- Dashboard Link -->
-            <a href="check_dashboard.php" class="image-link">
+            <a href="server/check_login.php" class="image-link">
                 <div class="image-box">
-                    <img src="images/dashboard.png" alt="View Dashboard">
+                    <img src="images/user.png" alt="View Dashboard">
                     <div class="overlay-text">View Dashboard</div>
                 </div>
             </a>
@@ -41,8 +45,7 @@
         </div>
     </div>
 
-    <div id="footer"></div>
+    <?php include('footer.php'); ?>
 
-    <script src="js/main.js"></script>
 </body>
 </html>

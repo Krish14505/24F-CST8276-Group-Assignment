@@ -28,7 +28,7 @@ function initMap(){
         document.getElementById("Destination")
     );
 
-    // Set the user's current location as the source
+    // Set user's current location as the source
     getUserLocation();
 }
 
@@ -39,7 +39,7 @@ function getUserLocation() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-            // Convert coordinates to a human-readable address
+            // Convert coordinates to a formatted address
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: userLocation }, function(results, status) {
                 if (status === "OK" && results[0]) {
@@ -87,6 +87,5 @@ function displayRouteInfo(source, destination, result) {
     document.getElementById("route-distance").textContent = route.distance.text;
     document.getElementById("route-duration").textContent = route.duration.text;
 
-    // Show the popup
     document.getElementById("route-info").style.display = "block";
 }
