@@ -1,28 +1,38 @@
 <?php
-require_once('../database/database.php');
-require_once('../database/db_credentials.php');
+require_once(dirname(__DIR__) . '/database/database.php');
+require_once(dirname(__DIR__) . '/database/db_credentials.php');
 
-// Handle form submission when the request method is POST
+
+$error_message = "";
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Sanitize inputs to prevent injection attacks
     $username = $_POST['username'];
     $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Hash the password for security
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    // Connect to the database
     $db = db_connect();
 
-    $sql = "INSERT INTO Users (username, email, password) VALUES (?, ?, ?)";
-    $stmt = mysqli_prepare($db, $sql);
-    mysqli_stmt_bind_param($stmt, "sss", $username, $email, $password);
-
-    // Execute the query and check if the user is successfully inserted
-    if (mysqli_stmt_execute($stmt)) {
-        // Redirect the user to the signin page after successful registration
-        header("Location: ../signin_page.php");
-        exit();
+    // Check if email already exists
+    $check_sql = "SELECT * FROM Users WHERE email = ?";
+    $check_stmt = mysqli_prepare($db, $check_sql);
+    mysqli_stmt_bind_param($check_stmt, "s", $email);
+    mysqli_stmt_execute($check_stmt);
+    $check_result = mysqli_stmt_get_result($check_stmt);
+    
+    if (mysqli_fetch_assoc($check_result)) {
+        $error_message = "Email is already registered.";
     } else {
-        echo "Error: Could not register user.";
+        $sql = "INSERT INTO Users (username, email, password) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, "sss", $username, $email, $password);
+        
+        if (mysqli_stmt_execute($stmt)) {
+            header("Location: /24F-CST8277-Google/signin_page.php");
+
+            exit();
+        } else {
+            $error_message = "Error: Could not register user.";
+        }
     }
 
     db_disconnect($db);

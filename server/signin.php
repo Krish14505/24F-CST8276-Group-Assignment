@@ -1,12 +1,17 @@
 <?php
 // Include database connection and credentials
-require_once('../database/database.php');
-require_once('../database/db_credentials.php');
+require_once(dirname(__DIR__) . '/database/database.php');
+require_once(dirname(__DIR__) . '/database/db_credentials.php');
 
-// Start the session to manage session variables
-session_start(); 
 
-// Handle form submission when the request method is POST
+// Start the session if it's not already active
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$error_message = ""; // Initialize an error message variable
+
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']); 
     $password = trim($_POST['password']); 
@@ -24,19 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Check if user exists and verify the password
     if ($user && password_verify($password, $user['password'])) {
-        // Set session variables for the logged-in user
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['username'] = $user['username'];
-        
-        // Close database connection and redirect to the dashboard
         db_disconnect($db); 
-        header("Location: ../dashboard.php"); 
+        header("Location: /24F-CST8277-Google/dashboard.php");
+
         exit();
     } else {
-        echo "<p>Invalid email or password.</p>";
+        $error_message = "Invalid email or password.";
     }
 
-    // Close the database connection
     db_disconnect($db);
 }
 ?>

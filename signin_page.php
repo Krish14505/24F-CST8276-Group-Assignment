@@ -1,6 +1,5 @@
-<!-- signin.php -->
-
 <?php include('header.php'); ?>
+<?php include('server/signin.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,11 +11,10 @@
 </head>
 <body>
     <div class="contentForm">
-        <h2 class="HeaderForm" style="padding: 10px;">Sign In</h2>
-        
-        <!-- Sign In Form -->
-        <form action="server/signin.php" method="POST">
+        <h2 class="HeaderForm">Sign In</h2>
 
+        <!-- Sign In Form -->
+        <form action="signin_page.php" method="POST">
             <div class="inputField">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required><br>
@@ -25,6 +23,11 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required><br>
             </div>
+
+            <!-- Display error message -->
+            <?php if (!empty($error_message)): ?>
+                <p class="error"><?php echo $error_message; ?></p>
+            <?php endif; ?>
 
             <div class="button">
                 <button type="submit">Log In</button>
@@ -35,6 +38,5 @@
     </div>
 
     <?php include('footer.php'); ?>
-    <script src="js/location.js"></script>
 </body>
 </html>
