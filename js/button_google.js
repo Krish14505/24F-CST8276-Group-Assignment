@@ -1,9 +1,8 @@
-//button_google.js
-//This code is developed to use Google Geolocation API and retrieve user geolocation
-//AUTHOR: Paulo Ricardo Gomes Granjeiro - 041118057, and Kyla Pineda
-//Collaborators: Craig, Krish, Leonardo, Yazid
+// button_google.js
+// This code is developed to use the Google Geolocation API and retrieve user geolocation
+// AUTHOR: Paulo Ricardo Gomes Granjeiro - 041118057, and Kyla Pineda
+// Collaborators: Craig, Krish, Leonardo, Yazid
 
-// Using Google API for Geolocation
 const http = new XMLHttpRequest();
 let result = document.querySelector("#result");
 let currentTimeDisplay = document.querySelector("#currentTime");
@@ -22,8 +21,9 @@ let circle;
 let directionsService;
 let directionsRenderer;
 let routePath = []; // Store the route path
+let isSaving = false; // Flag to prevent multiple save actions
 
-// Add event listeners to the buttons share my location, stop sharing, and save location
+// Add event listeners to the buttons (share, stop sharing, and save location)
 document.querySelector("#share").addEventListener("click", startLocationUpdates);
 document.querySelector("#stop").addEventListener("click", stopLocationUpdates);
 const saveLocationButton = document.querySelector("#save-location");
@@ -38,10 +38,9 @@ const spinner = document.querySelector("#spinner");
  */
 function initMap() {
     if (map) {
-        console.log("Map already initialized");
-        return;
+        return; 
     }
-    console.log("Initializing Map...");
+
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 0, lng: 0 },
         zoom: 15,
@@ -52,21 +51,19 @@ function initMap() {
         map: map,
         suppressMarkers: true
     });
-
-    console.log("Map initialized successfully");
 }
 
 /**
- * Function to start location updates
+ * Function to start location updates (every 15 seconds)
  */
 function startLocationUpdates() {
     if (!intervalId) {
-        findMyCoordinates();
-        intervalId = setInterval(findMyCoordinates, 15000);
+        findMyCoordinates(); // Get the current coordinates
+        intervalId = setInterval(findMyCoordinates, 15000); // Read every 15 seconds
         document.querySelector("#stop").disabled = false;
         document.querySelector("#share").disabled = true;
-        saveLocationButton.style.display = "inline-block"; // Show Save button
-        spinner.style.display = "block";
+        saveLocationButton.style.display = "inline-block"; 
+        spinner.style.display = "block"; // Show the spinner
         isSharing = true;
     }
 }
@@ -81,7 +78,7 @@ function stopLocationUpdates() {
         document.querySelector("#stop").disabled = true;
         document.querySelector("#share").disabled = false;
         saveLocationButton.style.display = "none"; // Hide Save button
-        spinner.style.display = "none";
+        spinner.style.display = "none"; // Hide the spinner
         isSharing = false;
     }
 }
@@ -103,15 +100,13 @@ function findMyCoordinates() {
             (position) => {
                 currentLatitude = position.coords.latitude;
                 currentLongitude = position.coords.longitude;
-                console.log("Latitude:", currentLatitude, "Longitude:", currentLongitude);
 
-                const geoAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLatitude},${currentLongitude}&key=AIzaSyCjk8ThaZ9tgH1FPGAch_JCECbysZS3_So`;
+                const geoAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLatitude},${currentLongitude}&key=YOUR_GOOGLE_API_KEY`;
 
                 updateMap(currentLatitude, currentLongitude);
                 getAPI(geoAPI, currentLatitude, currentLongitude);
             },
             (err) => {
-                console.error("Error getting location:", err.message);
                 alert("Error getting location: " + err.message);
             }
         );
@@ -125,7 +120,7 @@ function findMyCoordinates() {
  */
 function updateMap(latitude, longitude) {
     const position = { lat: latitude, lng: longitude };
-    routePath.push(position);
+    routePath.push(position); // Store the location in route path
     map.setCenter(position);
 
     if (circle) {
@@ -181,17 +176,23 @@ function drawRoute() {
  * Function to save the current location to the database
  */
 async function saveCurrentLocation() {
+    // Prevent multiple clicks while saving is in process
+    if (isSaving) {
+        return;
+    }
+
+    isSaving = true;
+
     if (currentLatitude !== null && currentLongitude !== null && isSharing) {
-        // Fetch the user ID from the session
-        const sessionResponse = await fetch("../server/get_session.php");
+        const sessionResponse = await fetch("http://localhost/24F-CST8277-Google/server/get_session.php");
         const sessionData = await sessionResponse.json();
 
         if (!sessionData.user_id) {
             alert("User not logged in. Please sign in first.");
+            isSaving = false;
             return;
         }
 
-        // Include address information
         const locationData = {
             user_id: sessionData.user_id,
             latitude: currentLatitude,
@@ -203,35 +204,37 @@ async function saveCurrentLocation() {
         };
 
         try {
-            const response = await fetch("../server/save_location.php", {
-                method: "POST",
+            const response = await fetch("http://localhost/24F-CST8277-Google/server/save_location.php", {
+                method: "POST",  
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(locationData)
+                body: JSON.stringify(locationData)  // Send data as JSON
             });
 
             const result = await response.json();
+
             if (result.success) {
                 alert("Location saved successfully!");
             } else {
                 alert("Failed to save location: " + result.message);
             }
         } catch (error) {
-            console.error("Error saving location:", error);
             alert("Error saving location.");
+            console.error("Error saving location:", error);
         }
+
+        isSaving = false; 
     } else {
         alert("No location data to save!");
+        isSaving = false;
     }
 }
-
 
 /**
  * Fetching the address using Google API and saving location data
  */
 function getAPI(geoAPI, latitude, longitude) {
-    console.log("Fetching address from:", geoAPI);
     http.open("GET", geoAPI);
     http.send();
     http.onreadystatechange = function () {
@@ -243,7 +246,6 @@ function getAPI(geoAPI, latitude, longitude) {
             const city = locationData.find(item => item.types.includes("locality"))?.long_name || "";
             const postal_code = locationData.find(item => item.types.includes("postal_code"))?.long_name || "";
 
-            // Update global currentLocationData object
             currentLocationData = {
                 latitude,
                 longitude,
@@ -252,12 +254,9 @@ function getAPI(geoAPI, latitude, longitude) {
                 country,
                 postal_code
             };
-
-            console.log("Fetched Address:", currentLocationData);
         }
     };
 }
-
 
 // Update the current time every second
 setInterval(updateCurrentTime, 1000);

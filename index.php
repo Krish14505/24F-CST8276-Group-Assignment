@@ -1,8 +1,4 @@
-<!-- index.php
-link: 
-http://localhost:80/24F-CST8277-Google/index.php
-
--->
+<!-- index.php -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +16,7 @@ http://localhost:80/24F-CST8277-Google/index.php
         <p>Select a page to get started:</p>
 
         <div class="image-container">
+            <!-- Link to location sharing page -->
             <a href="location.php" class="image-link">
                 <div class="image-box">
                     <img src="images/location.png" alt="Location Sharing">
@@ -27,6 +24,7 @@ http://localhost:80/24F-CST8277-Google/index.php
                 </div>
             </a>
 
+            <!-- Link to routes page -->
             <a href="routes.php" class="image-link">
                 <div class="image-box">
                     <img src="images/route.png" alt="Find the Best Route">
@@ -34,7 +32,7 @@ http://localhost:80/24F-CST8277-Google/index.php
                 </div>
             </a>
 
-            <!-- Dashboard Link -->
+            <!-- Link to the dashboard (if user is logged in) -->
             <a href="server/check_login.php" class="image-link">
                 <div class="image-box">
                     <img src="images/user.png" alt="View Dashboard">

@@ -1,18 +1,16 @@
 <?php
 // database.php
-// This code was reused and refactored from PAULO's project for Web Development in Level 2
-// AUTHOR: Paulo Ricardo Gomes Granjeiro - 041118057
-// Collaborators: Craig, Kyla, Krish, Leonardo, Yazid
+// This file handles database connection and disconnection functions.
+require_once('db_credentials.php'); 
 
-require_once('db_credentials.php'); // getting credentials from file db_credentials.php
-
+/**
+ * Establishes a connection to the database using credentials from db_credentials.php.
+ *
+ * @return mysqli $connection The database connection resource
+ */
 function db_connect()
 { 
-    // Enable error reporting for debugging
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-
-    // Function to connect form to database
+    // Establish connection to the database
     $connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME, DB_PORT);
     
     // Check if the connection is successful
@@ -23,17 +21,27 @@ function db_connect()
     return $connection;
 }
 
+/**
+ * Closes the database connection.
+ *
+ * @param mysqli $connection The database connection resource to close
+ */
 function db_disconnect($connection)
 { 
-    // Function to disconnect from database
+    // Disconnect from the database if a connection exists
     if (isset($connection)) { 
         mysqli_close($connection);
     }
 }
 
+/**
+ * Confirms that the result set from a database query is valid.
+ *
+ * @param mysqli_result $result_set The result set from a database query
+ */
 function confirm_result_set($result_set)
 {  
-    // Check query result
+    // If the result set is invalid, exit with an error message
     if (!$result_set) {
         exit("Database query failed: " . mysqli_error($GLOBALS['connection']));
     }

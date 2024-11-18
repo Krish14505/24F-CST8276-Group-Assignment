@@ -1,6 +1,7 @@
 <!-- signup.php -->
 
 <?php include('header.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,30 +13,36 @@
 <body>
 
     <div id="header"></div>
+    
+    <!-- Main Content for Sign Up Form -->
     <div class="contentForm">
         <h2>Sign Up</h2>
-    <form action="server/signup.php" method="POST">
-        
-        <div class="inputField">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br>
-        </div>
 
-        <div class="inputField">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br>
-        </div>
+        <form action="server/signup.php" method="POST">
+            
+            <!-- Username input field -->
+            <div class="inputField">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br>
+            </div>
 
-        <div class="inputField">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
-        </div>
+            <!-- Email input field -->
+            <div class="inputField">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br>
+            </div>
 
-        <div class="button">
-            <button type="submit">Sign Up</button>
-        </div>
-    </form>
+            <!-- Password input field -->
+            <div class="inputField">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+            </div>
+            <div class="button">
+                <button type="submit">Sign Up</button>
+            </div>
+        </form>
     </div>
+
     <?php include('footer.php'); ?>
 
     <script src="js/button_google.js"></script>

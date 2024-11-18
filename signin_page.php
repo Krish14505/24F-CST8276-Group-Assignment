@@ -1,6 +1,7 @@
 <!-- signin.php -->
 
 <?php include('header.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,27 +13,28 @@
 <body>
     <div class="contentForm">
         <h2 class="HeaderForm" style="padding: 10px;">Sign In</h2>
-    <form action="server/signin.php" method="POST">
+        
+        <!-- Sign In Form -->
+        <form action="server/signin.php" method="POST">
 
-        <div class="inputField">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br>
-        </div>
+            <div class="inputField">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br>
+            </div>
+            <div class="inputField">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+            </div>
 
-        <div class="inputField">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
-        </div>
+            <div class="button">
+                <button type="submit">Log In</button>
+            </div>
+        </form>
 
-        <div class="button">
-            <button type="submit">Log In</button>
-        </div>
-    </form>
-
-    <p>Don't have an account? <a href="signup_page.php">Create an account</a></p>
+        <p>Don't have an account? <a href="signup_page.php">Create an account</a></p>
     </div>
-    <?php include('footer.php'); ?>
 
+    <?php include('footer.php'); ?>
     <script src="js/button_google.js"></script>
 </body>
 </html>
