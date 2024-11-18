@@ -24,7 +24,8 @@ if (!$db) {
 }
 
 // Step 3: Prepare the SQL query to fetch the user's locations
-$sql = "SELECT * FROM Locations WHERE user_id = ?";
+$sql = "SELECT * FROM Locations WHERE user_id = ? ORDER BY timestamp DESC";
+
 $stmt = mysqli_prepare($db, $sql);
 if (!$stmt) {
     echo json_encode(['success' => false, 'message' => 'Failed to prepare statement']);
@@ -51,7 +52,11 @@ if (!$result) {
 // Step 6: Fetch locations into an array
 $locations = [];
 while ($row = mysqli_fetch_assoc($result)) {
-    $locations[] = $row;
+    $locations[] = [
+        'location_id' => $row['location_id'],
+        'formatted_address' => $row['formatted_address'],
+        'timestamp' => $row['timestamp']
+    ];
 }
 
 // Step 7: Output the locations as a JSON response

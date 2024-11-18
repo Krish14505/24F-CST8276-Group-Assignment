@@ -10,10 +10,7 @@ require_once('db_credentials.php');
  */
 function db_connect()
 { 
-    // Establish connection to the database
     $connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME, DB_PORT);
-    
-    // Check if the connection is successful
     if (!$connection) {
         die("Connection failed: " . mysqli_connect_error());
     }
@@ -28,7 +25,6 @@ function db_connect()
  */
 function db_disconnect($connection)
 { 
-    // Disconnect from the database if a connection exists
     if (isset($connection)) { 
         mysqli_close($connection);
     }
@@ -41,7 +37,6 @@ function db_disconnect($connection)
  */
 function confirm_result_set($result_set)
 {  
-    // If the result set is invalid, exit with an error message
     if (!$result_set) {
         exit("Database query failed: " . mysqli_error($GLOBALS['connection']));
     }
