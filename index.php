@@ -1,6 +1,6 @@
 <!-- index.php
 link: 
-http://localhost:8080/24F-CST8277-Google/index.php
+http://localhost:80/24F-CST8277-Google/index.php
 
 -->
 

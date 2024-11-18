@@ -10,6 +10,6 @@ define("DB_SERVER", "localhost");
 define("DB_USER", "geo_user"); 
 define("DB_PASS", "geo_PASSWORD69!"); //todo_PASSWORD69!
 define("DB_NAME","geolocation");
-define('DB_PORT', 3307);
+define('DB_PORT', 3307);  //change according to your xampp mysql port
 
 ?>
