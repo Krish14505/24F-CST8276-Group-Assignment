@@ -69,7 +69,6 @@
                 .then(data => {
                     if (data.success) {
                         document.getElementById(`location-${locationId}`).remove();
-                        alert("Location deleted successfully.");
                     } else {
                         alert("Failed to delete location: " + data.message);
                     }
