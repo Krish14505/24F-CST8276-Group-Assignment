@@ -1,4 +1,4 @@
-// button_google.js
+// location.js
 // This code is developed to use the Google Geolocation API and retrieve user geolocation
 // AUTHOR: Paulo Ricardo Gomes Granjeiro - 041118057, and Kyla Pineda
 // Collaborators: Craig, Krish, Leonardo, Yazid
@@ -254,6 +254,10 @@ function getAPI(geoAPI, latitude, longitude) {
                 country,
                 postal_code
             };
+            // Display the address in the result section
+            fetchCount++;
+            const currentTime = new Date().toLocaleTimeString();
+            result.innerHTML += `${fetchCount}: ${newAddress} (Fetched at: ${currentTime})\n`;
         }
     };
 }
