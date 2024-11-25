@@ -17,6 +17,12 @@
         <h3>Your Saved Locations</h3>
         <br>
         <div id="locations"></div> <!-- This is where the saved locations will be displayed -->
+
+        <!-- Saved Routes Section -->
+        <h3>Your Saved Routes</h3>
+        <br>
+        <div id="routes"></div> <!-- Saved routes will be displayed here -->
+
     </div>
     <?php include('footer.php'); ?>
 
@@ -53,6 +59,36 @@
                     console.error('Error fetching locations:', error);
                     document.getElementById("locations").innerHTML = "<p>Failed to load locations.</p>";
                 });
+
+
+            // Fetch and display saved routes
+            fetch('server/get_routes.php')
+                .then(response => response.json())
+                .then(data => {
+                    const routesDiv = document.getElementById("routes");
+                    
+                    if (data.success === false) {
+                        routesDiv.innerHTML = `<p>${data.message}</p>`;
+                    } else if (Array.isArray(data.routes) && data.routes.length > 0) {
+                        routesDiv.innerHTML = data.routes.map(route => `
+                            <div class="route-card" id="route-${route.route_id}">
+                                <div class="route-info">
+                                    <p><strong>Route Name:</strong> ${route.route_name}</p>
+                                    <p><strong>From:</strong> ${route.start_location}</p>
+                                    <p><strong>To:</strong> ${route.end_location}</p>
+                                    <p><strong>Distance:</strong> ${route.total_distance} km</p>
+                                </div>
+                                <button class="del-btn" onclick="deleteRoute(${route.route_id})">Delete</button>
+                            </div>
+                        `).join('');
+                    } else {
+                        routesDiv.innerHTML = "<p>No saved routes found.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching routes:', error);
+                    document.getElementById("routes").innerHTML = "<p>Failed to load routes.</p>";
+                });
         });
 
         // Function to handle location deletion
@@ -76,6 +112,31 @@
                 .catch(error => {
                     console.error('Error deleting location:', error);
                     alert("An error occurred while deleting the location.");
+                });
+            }
+        }
+
+        // Function to delete a route
+        function deleteRoute(routeId) {
+            if (confirm("Are you sure you want to delete this route?")) {
+                fetch('server/delete_route.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ route_id: routeId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`route-${routeId}`).remove();
+                    } else {
+                        alert("Failed to delete route: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting route:', error);
+                    alert("An error occurred while deleting the route.");
                 });
             }
         }

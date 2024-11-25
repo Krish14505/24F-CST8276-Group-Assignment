@@ -40,11 +40,9 @@ CREATE TABLE Routes (
     route_id INT AUTO_INCREMENT PRIMARY KEY,
     route_name VARCHAR(50),
     total_distance DOUBLE,
-    start_location_id INT,
-    end_location_id INT,
+    start_location VARCHAR(255), -- Store start location as plain text
+    end_location VARCHAR(255),   -- Store end location as plain text
     Users_user_id INT,
-    FOREIGN KEY (start_location_id) REFERENCES Locations(location_id) ON DELETE CASCADE,
-    FOREIGN KEY (end_location_id) REFERENCES Locations(location_id) ON DELETE CASCADE,
     FOREIGN KEY (Users_user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 

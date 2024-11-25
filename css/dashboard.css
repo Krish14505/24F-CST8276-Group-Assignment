@@ -20,7 +20,7 @@ h3 {
     margin: 0 auto;
 }
 
-.location-card {
+.location-card, .route-card {
     background-color: #d4d4e2;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -32,7 +32,7 @@ h3 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.location-info {
+.location-info, .route-info {
     flex: 1;
 }
 
