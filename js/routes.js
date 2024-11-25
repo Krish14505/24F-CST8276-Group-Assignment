@@ -66,17 +66,48 @@ function calculateRoute() {
         travelMode: 'DRIVING',
     };
 
-    directionsService.route(request, function(result, status) {
+    directionsService.route(request, function (result, status) {
         if (status === "OK") {
             directionsRenderer.setDirections(result);
 
-            // Display route information
+            // Display route info
             displayRouteInfo(source, dest, result);
+
+            // Save the route to the backend
+            const route = result.routes[0].legs[0];
+            saveRouteToBackend({
+                origin: source,
+                destination: dest,
+                distance: route.distance.text,
+                duration: route.duration.text,
+            });
         } else {
             console.error("Directions request failed due to " + status);
         }
     });
 }
+
+function saveRouteToBackend(routeData) {
+    fetch("http://localhost/24F-CST8277-Google-Kyla-final/server/save_routes.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(routeData),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                alert("Route saved successfully!");
+            } else {
+                alert("Failed to save route: " + data.message);
+            }
+        })
+        .catch((error) => {
+            console.error("Error saving route:", error);
+        });
+}
+
 
 function displayRouteInfo(source, destination, result) {
     const route = result.routes[0].legs[0];
@@ -89,3 +120,56 @@ function displayRouteInfo(source, destination, result) {
 
     document.getElementById("route-info").style.display = "block";
 }
+
+async function saveRoute() {
+    // Get route details from the form
+    const source = document.getElementById("route-source").textContent;
+    const destination = document.getElementById("route-destination").textContent;
+    const distance = document.getElementById("route-distance").textContent;
+    const duration = document.getElementById("route-duration").textContent;
+    const routeName = document.getElementById("route-name").value || "Unnamed Route";
+
+    // Validate required fields
+    if (!source || !destination || !distance || !duration) {
+        alert("Missing required route information.");
+        return;
+    }
+
+    try {
+        // Prepare the data to be sent
+        const routeData = {
+            start_location: source,
+            end_location: destination,
+            total_distance: distance,
+            total_duration: duration,
+            route_name: routeName,
+        };
+
+        // Send data to the backend
+       
+        const response = await fetch("server/save_routes.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(routeData),
+        });
+        
+
+        const result = await response.json();
+
+        // Handle the response
+        if (result.success) {
+            alert("Route saved successfully!");
+        } else {
+            alert("Failed to save route: " + result.message);
+        }
+    } catch (error) {
+        console.error("Error saving route:", error);
+        alert("An unexpected error occurred while saving the route.");
+    }
+}
+
+// Attach event listener to the Save Route button
+document.getElementById("saveRouteButton").addEventListener("click", saveRoute);
+
