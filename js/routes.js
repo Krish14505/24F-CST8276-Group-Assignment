@@ -77,7 +77,7 @@ function calculateRoute() {
             // Automatically save the route to the backend
             const route = result.routes[0].legs[0];
             saveRouteToBackend({
-                route_name: "Unnamed Route", // Can be changed dynamically if needed
+                route_name: "Unnamed Route",
                 start_location: source,
                 end_location: dest,
                 total_distance: parseFloat(route.distance.text.replace(/[^\d.]/g, "")), // Remove "km" or "mi"
@@ -87,7 +87,6 @@ function calculateRoute() {
         }
     });
 }
-
 
 function saveRouteToBackend(routeData) {
     fetch("server/save_routes.php", {
