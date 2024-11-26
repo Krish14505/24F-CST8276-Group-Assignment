@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Launch Chrome against localhost",
             //update this according to who is using. This should be the place in you htdocs(inside XAMPP) where the project is
-            "url": "http://localhost/frontend/24F-CST8277-Group-Assignment",
+            "url": "http://localhost/24F-CST8277-Google/index.php",
             "webRoot": "${workspaceFolder}"
         }
     ]

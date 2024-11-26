@@ -5,16 +5,16 @@ let sourceAutoComplete;
 let destinationAutoComplete;
 
 function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {  // Maps API
         center: { lat: 37.7749, lng: -122.4194 },
         zoom: 13,
     });
 
-    directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsService = new google.maps.DirectionsService(); // calculates the route from start to end
+    directionsRenderer = new google.maps.DirectionsRenderer(); // visualizes the route calculated
     directionsRenderer.setMap(map);
 
-    sourceAutoComplete = new google.maps.places.Autocomplete(
+    sourceAutoComplete = new google.maps.places.Autocomplete(    // Places API
         document.getElementById("source")
     );
     destinationAutoComplete = new google.maps.places.Autocomplete(
@@ -34,7 +34,7 @@ function getUserLocation() {
                     lng: position.coords.longitude,
                 };
                 // Convert coordinates to a formatted address
-                const geocoder = new google.maps.Geocoder();
+                const geocoder = new google.maps.Geocoder();  // Geocoder API
                 geocoder.geocode({ location: userLocation }, function (results, status) {
                     if (status === "OK" && results[0]) {
                         document.getElementById("source").value = results[0].formatted_address;
