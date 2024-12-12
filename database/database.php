@@ -1,37 +1,44 @@
 <?php
-//This code was reused and refactored from PAULO's project for Web Development in Level 2
-//AUTHOR: Paulo Ricardo Gomes Granjeiro - 041118057
-//Collaborators: Craig, Kyla, Krish, Leonardo, Yazid
+// database.php
+// This file handles database connection and disconnection functions.
+require_once('db_credentials.php'); 
 
-require_once('db_credentials.php'); //getting credentials from file db_credentials.php
-
+/**
+ * Establishes a connection to the database using credentials from db_credentials.php.
+ *
+ * @return mysqli $connection The database connection resource
+ */
 function db_connect()
-{ //function to connect your form to your database
-    $connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME); //connecting to the database using variables from db_credentials.php
-    confirm_db_connect(); //if connection fail, it will show a message
+{ 
+    $connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME, DB_PORT);
+    if (!$connection) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+
     return $connection;
 }
 
+/**
+ * Closes the database connection.
+ *
+ * @param mysqli $connection The database connection resource to close
+ */
 function db_disconnect($connection)
-{ //function to disconnect the form from the database
-    if (isset($connection)) { //check if the form/ page is connected
+{ 
+    if (isset($connection)) { 
         mysqli_close($connection);
     }
 }
 
-function confirm_db_connect()
-{ //function to show database connection failed in case conection fail.
-    if (mysqli_connect_errno()) {
-        $msg = "Database connection failed: ";
-        $msg .= mysqli_connect_error();
-        $msg .= " (" . mysqli_connect_errno() . ")";
-        exit($msg);
-    }
-}
-
+/**
+ * Confirms that the result set from a database query is valid.
+ *
+ * @param mysqli_result $result_set The result set from a database query
+ */
 function confirm_result_set($result_set)
-{  //check query
+{  
     if (!$result_set) {
-        exit("Database query failed.");
+        exit("Database query failed: " . mysqli_error($GLOBALS['connection']));
     }
 }
+?>
